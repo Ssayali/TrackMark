@@ -57,6 +57,7 @@ public class NavigateActivity extends AppCompatActivity implements ConnectivityR
                                 Intent i = new Intent(NavigateActivity.this, MapsActivity.class);
                                 i.putExtra("emialname",session.KEY_EMAIL);
                                 startActivity(i);
+                                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 
                             }
 
@@ -69,6 +70,7 @@ public class NavigateActivity extends AppCompatActivity implements ConnectivityR
                                 pd.dismiss();
                                 Intent i = new Intent(NavigateActivity.this, LoginActivity.class);
                                 startActivity(i);
+                                overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 
                             }
 
@@ -126,8 +128,9 @@ public class NavigateActivity extends AppCompatActivity implements ConnectivityR
         int color;
         boolean isConnected = ConnectivityReceiver.isConnected();
         if (isConnected) {
-        Intent i = new Intent(NavigateActivity.this, WebViewTrackMark.class);
-        startActivity(i);
+            Intent i = new Intent(NavigateActivity.this, WebViewTrackMark.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         }
         else
         {

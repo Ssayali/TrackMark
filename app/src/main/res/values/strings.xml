@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TrackMark</string>
+    <string name="title_activity_Web_view">TrackMark Shop</string>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_shop_dashboard">ShopDashboard</string>
 

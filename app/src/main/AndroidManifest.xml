@@ -34,7 +34,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".NavigateActivity" />
-        <activity android:name=".WebViewTrackMark" />
+        <!--<activity android:name=".WebViewTrackMark" />-->
+        <activity
+            android:name=".WebViewTrackMark"
+            android:label="@string/title_activity_Web_view"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity" />
 
         <meta-data
