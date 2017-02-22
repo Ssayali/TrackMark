@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/ShopDetails"
+            android:icon="@drawable/shopnew"
+            android:title="Shop Details" />
+        <item
+            android:id="@+id/ProductDetails"
+            android:icon="@drawable/shop"
+            android:title="Product Details" />
+
+        <item
+            android:id="@+id/OwnerDetails"
+            android:icon="@drawable/profile"
+            android:title="Owner Details" />
+        <item
+            android:id="@+id/Chatting"
+            android:icon="@drawable/chat"
+            android:title="Chatting" />
+
+
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/AboutUs"
+                android:icon="@drawable/about"
+                android:title="About Us" />
+            <item
+                android:id="@+id/ContactUs"
+                android:icon="@drawable/contact"
+                android:title="Contact Us" />
+        </menu>
+    </item>
+
+    <item android:title="Navigation">
+        <menu>
+            <item
+                android:id="@+id/GotoMap"
+                android:icon="@drawable/map"
+                android:title="Goto Map" />
+            <item
+                android:id="@+id/Logout"
+                android:icon="@drawable/logout"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>

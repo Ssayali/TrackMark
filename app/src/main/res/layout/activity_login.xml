@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    android:background="@color/bgwhite"
+    tools:context="in.blazonsoftwares.trackmark.LoginActivity">
+
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/logo"
+        android:id="@+id/logoimg"
+        android:layout_centerHorizontal="true"
+        />
+
+    <LinearLayout
+        android:layout_below="@id/logoimg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email Address"
+        android:id="@+id/txt_uname"
+        android:text=""
+        android:layout_margin="16dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:id="@+id/txt_password"
+        android:text=""
+        android:layout_margin="16dp"
+        />
+
+
+
+    <Button
+        android:id="@+id/btnsignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_margin="16dp"
+        android:textColor="@color/bgwhite"
+        android:onClick="btnUserLogin_Click"
+        android:text="Sign In">
+    </Button>
+
+        <!--<Button
+            android:id="@+id/btnsignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/bgwhite"
+            android:layout_margin="16dp"
+            android:onClick="btnRegistrationUser_Click"
+            android:text="Sign Up">
+        </Button>-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New User Click Here.."
+            android:textColor="@color/colorPrimary"
+            android:gravity="center_horizontal"
+            android:onClick="btnRegistrationUser_Click"
+            />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

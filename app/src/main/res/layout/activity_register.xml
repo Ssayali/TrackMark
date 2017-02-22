@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    android:background="@color/bgwhite"
+    tools:context="in.blazonsoftwares.trackmark.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email Address"
+        android:id="@+id/txt_email"
+        android:layout_margin="16dp"
+        />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact Address"
+            android:id="@+id/txt_add"
+            android:layout_margin="16dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact No"
+            android:id="@+id/txt_cno"
+            android:maxLength="10"
+            android:layout_margin="16dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:id="@+id/txt_pass"
+            android:inputType="textPassword"
+            android:layout_margin="16dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:id="@+id/txt_conpass"
+            android:inputType="textPassword"
+            android:layout_margin="16dp"
+            />
+
+      <Button
+        android:id="@+id/btnsignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_margin="16dp"
+        android:textColor="@color/bgwhite"
+
+        android:text="Register">
+    </Button>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

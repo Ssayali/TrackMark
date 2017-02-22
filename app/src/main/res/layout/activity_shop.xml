@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     android:padding="10dp"
+    android:background="@color/bgwhite"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="in.blazonsoftwares.trackmark.ShopActivity">
+
+
+
+    <ImageView
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/logo"
+        android:id="@+id/shopimg"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <LinearLayout
+        android:layout_below="@+id/shopimg"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:textSize="14dp"
+            android:id="@+id/txtshopname"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtshopaddress"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:textSize="14dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtshopcno"
+            android:padding="10dp"
+            android:textSize="14dp"
+            android:layout_marginTop="5dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtshopowner"
+            android:padding="10dp"
+            android:textSize="14dp"
+            android:layout_marginTop="5dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtshopownercno"
+            android:padding="10dp"
+            android:textSize="14dp"
+            android:layout_marginTop="5dp"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/LinearLayout02"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_below="@+id/txtshopownercno"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:id="@+id/btnsignin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_margin="2dp"
+                android:textColor="@color/bgwhite"
+                android:onClick="btnChat_Click"
+                android:layout_weight="0.9" android:text="Chat">
+            </Button>
+            <Button
+                android:id="@+id/btnsignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/bgwhite"
+                android:layout_weight="0.9"
+                android:layout_margin="2dp"
+                android:onClick="btnclose_Click"
+                android:text="Close">
+            </Button>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

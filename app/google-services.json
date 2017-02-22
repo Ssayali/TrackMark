@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "129958447091",
+    "firebase_url": "https://trackmark-2a9be.firebaseio.com",
+    "project_id": "trackmark-2a9be",
+    "storage_bucket": "trackmark-2a9be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129958447091:android:a43e378e6ef306be",
+        "android_client_info": {
+          "package_name": "in.blazonsoftwares.trackmark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129958447091-uok32s6udieb79f6uhhp14ijlstm6r4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUAukaav6kGusixivpXv0Luk-Ukq4mBWw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

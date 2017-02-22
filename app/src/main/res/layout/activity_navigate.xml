@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    android:background="@drawable/slide"
+     tools:context="in.blazonsoftwares.trackmark.NavigateActivity">
+
+
+    <LinearLayout
+        android:layout_below="@+id/logoimg"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="30dp"
+        android:layout_marginTop="115dp"
+    >
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loadmember1"
+            android:layout_marginTop="01dp"
+            android:src="@drawable/member"
+            android:onClick="loginmember"
+            />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loadmember"
+            android:layout_marginTop="01dp"
+            android:src="@drawable/shopowner"
+            android:onClick="loginagent"
+            />
+</LinearLayout>
+
+
+
+   
+</RelativeLayout>
