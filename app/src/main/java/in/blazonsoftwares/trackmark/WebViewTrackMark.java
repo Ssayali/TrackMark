@@ -13,6 +13,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 public class WebViewTrackMark extends AppCompatActivity {
 
     private static WebView myWebView;
@@ -38,7 +40,7 @@ public class WebViewTrackMark extends AppCompatActivity {
 
         if(isNetworkAvailable(getApplicationContext())) {
             //myWebView.loadUrl(RestAPI.main_link+link);
-            myWebView.loadUrl("http://trackmark.in/");
+            myWebView.loadUrl(WebServicesAPI.deployment_api);
             //System.out.println("Sachin = "+RestAPI.main_link+link);
             myWebView.getSettings().setJavaScriptEnabled(true);
 

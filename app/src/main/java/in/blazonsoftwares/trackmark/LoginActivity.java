@@ -31,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
@@ -116,17 +118,15 @@ public class LoginActivity extends AppCompatActivity {
 
         if(user.equals("") || pass.equals(""))
         {
-
             Toast.makeText(LoginActivity.this, "Sorry username and password is compulsory...",
                     Toast.LENGTH_SHORT).show();
             username.setText("");
             password.setText("");
             username.requestFocus();
-
         }
 
         else {
-            String url = "http://trackmark.in/shop/LoginAuthentication?username=" + user + "&password=" + pass;
+            String url = WebServicesAPI.deployment_api+"shop/LoginAuthentication?username=" + user + "&password=" + pass;
             //String url="http://trackmark.in/shop/LoginAuthentication?username=om@gmail.com&password=123456";
             StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                 @Override
