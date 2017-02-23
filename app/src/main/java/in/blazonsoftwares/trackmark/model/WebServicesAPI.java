@@ -7,4 +7,5 @@ package in.blazonsoftwares.trackmark.model;
 public class WebServicesAPI {
     public static String development_api= "http://trackmark.in/";
     public static String deployment_api= "http://trackmark.in/";
+
 }
