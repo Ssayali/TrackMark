@@ -53,11 +53,8 @@ String useremail="";
             @Override
             public void onClick(View v) {
                 try {
-
-
                      //   String url = WebServicesAPI.deployment_api+"shop/UpdatVisitor?User_Email='"+visitoremail.getText().toString()+"'?User_password=''?User_Name=''?User_Address='"+visitoraddress.getText().toString()+"'?User_cno='"+visitocno.getText().toString()+"'";
                         String url = WebServicesAPI.deployment_api+"shop/UpdatVisitor?User_Email=om@gmail.com&User_password=123456&User_Name=s&User_Address=pune&User_cno=8888888";
-
                         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -78,8 +75,6 @@ String useremail="";
                                 });
                         RequestQueue requestQueue = Volley.newRequestQueue(VisitorDetails.this);
                         requestQueue.add(stringRequest);
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -92,8 +87,6 @@ String useremail="";
         try
         {
             String url = WebServicesAPI.deployment_api+"shop/getVisitorDetails?username="+useremail;
-
-
             StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -109,10 +102,8 @@ String useremail="";
             requestQueue.add(stringRequest);
         }
         catch (Exception ex3){
-
             Toast.makeText(VisitorDetails.this,"this is error"+ex3,Toast.LENGTH_SHORT).show();
         }
-
     }
     private void showJSON(String response){
         try {
@@ -125,8 +116,6 @@ String useremail="";
                 visitocno.setText(vehicle_info.getString(Configvolley.Member_cno));
                 txt_pass.setText(vehicle_info.getString(Configvolley.Member_password));
                 txt_conpass.setText(vehicle_info.getString(Configvolley.Member_password));
-
-
                 visitoremail.setTextSize(20);
                 visitorcode.setTextSize(20);
                 visitorcode.setTextSize(20);
@@ -134,8 +123,6 @@ String useremail="";
                 visitocno.setTextSize(20);
                 txt_pass.setTextSize(20);
                 txt_conpass.setTextSize(20);
-
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
