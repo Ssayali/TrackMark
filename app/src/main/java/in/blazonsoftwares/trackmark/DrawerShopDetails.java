@@ -25,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 public class DrawerShopDetails extends Fragment {
     TextView txtshopname,txtshopaddress,txtshopcno;
     ImageView shopimg;
@@ -44,7 +46,7 @@ public class DrawerShopDetails extends Fragment {
 
     private void getdata() {
         int productcode=Integer.parseInt(SessionManagement.KEY_Shopcode);
-        String url = "http://trackmark.in/Shop/ShopallDetailsByid?shopid="+productcode;
+        String url = WebServicesAPI.deployment_api+"Shop/ShopallDetailsByid?shopid="+productcode;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -78,7 +80,7 @@ public class DrawerShopDetails extends Fragment {
                     Picasso.with(getContext()).load(R.drawable.logowithout).into(shopimg);
                 }
                 else {
-                    Picasso.with(getContext()).load("http://trackmark.in" + vehicle_info.getString(Configvolley.Shop_Image)).into(shopimg);
+                    Picasso.with(getContext()).load(WebServicesAPI.deployment_api + vehicle_info.getString(Configvolley.Shop_Image)).into(shopimg);
                 }
                 txtshopname.setTextSize(30);
                 txtshopcno.setTextSize(20);

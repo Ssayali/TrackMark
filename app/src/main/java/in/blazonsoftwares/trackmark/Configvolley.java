@@ -1,15 +1,8 @@
 package in.blazonsoftwares.trackmark;
 
-/**
- * Created by shree on 02/06/2017.
- */
 
 public class Configvolley {
-    public static final String DATA_URLR = "http://trackmark.in/Shop/ProductallDetails";
 
-    public static final String KEY_SHOP_NAME = "id";
-    public static final String KEY_SHOP_DESC = "name";
-    public static final String KEY_LOGO = "email";
 
     public static final String Product_No = "Product_No";
     public static final String Product_Name = "Product_Name";
@@ -37,6 +30,14 @@ public class Configvolley {
     public static final String Latitude = "Latitude";
     public static final String Langitude = "Langitude";
     public static final String Shop_no = "Shop_no";
+
+    //member pojo class
+    public static final String Member_Code = "Member_Code";
+    public static final String Member_Email = "Member_Email";
+    public static final String Member_password = "Member_password";
+    public static final String Member_cno = "Member_cno";
+    public static final String Member_Address = "Member_Address";
+
 
 
 }

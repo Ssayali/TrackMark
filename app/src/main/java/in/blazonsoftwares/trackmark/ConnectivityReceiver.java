@@ -1,8 +1,5 @@
 package in.blazonsoftwares.trackmark;
 
-/**
- * Created by Lincoln on 18/03/16.
- */
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

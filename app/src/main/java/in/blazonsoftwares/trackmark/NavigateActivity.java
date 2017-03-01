@@ -10,9 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,17 +42,17 @@ public class NavigateActivity extends AppCompatActivity implements ConnectivityR
                 pd = new ProgressDialog(NavigateActivity.this);
                 pd.setMessage("Loading");
                 pd.show();
-
                 session = new SessionManagement(getApplicationContext());
                 try{
-                    if(session.isLoggedIn()) {
 
+                    //Toast.makeText(NavigateActivity.this,"1..........."+session.getUserDetails().get("email"),Toast.LENGTH_LONG).show();
+                    if(session.isLoggedIn()) {
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             public void run() {
                                 pd.dismiss();
                                 Intent i = new Intent(NavigateActivity.this, MapsActivity.class);
-                                i.putExtra("emialname",session.KEY_EMAIL);
+                                i.putExtra("emailname",session.getUserDetails().get("email"));
                                 startActivity(i);
                                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 

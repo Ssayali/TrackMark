@@ -27,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 public class DrawerOwnerDetails extends Fragment {
     ProgressDialog pd;
     TextView txt_ucode,txt_uemail,txt_uname,txt_uadd,txt_ucno;
@@ -58,7 +60,8 @@ public class DrawerOwnerDetails extends Fragment {
 
     private void getdata() {
         int productcode=Integer.parseInt(SessionManagement.KEY_Shopcode);
-        String url = "http://trackmark.in/USER/UseralldetailsByshopid?shopid="+productcode;
+
+        String url = WebServicesAPI.deployment_api +"USER/UseralldetailsByshopid?shopid="+productcode;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

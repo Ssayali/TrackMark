@@ -49,6 +49,8 @@ public class ShopDashboard extends AppCompatActivity
         shopname = getIntent().getExtras().getString("shopname");
         emailname = getIntent().getExtras().getString("emailname");
 
+
+
         SessionManagement newss=new SessionManagement();
         newss.KEY_Shopcode=shopname;
 
@@ -64,8 +66,6 @@ public class ShopDashboard extends AppCompatActivity
 
         welcomeusename = (TextView) header.findViewById(R.id.welcomename);
         welcomeusename.setText(emailname);
-
-
 
         displaySelectedScreen(R.id.ShopDetails);
     }
@@ -121,6 +121,11 @@ public class ShopDashboard extends AppCompatActivity
                 break;
             case R.id.GotoMap:
                 Intent i = new Intent(ShopDashboard.this, MapsActivity.class);
+                i.putExtra("emailname",emailname);
+                startActivity(i);
+                break;
+            case R.id.VisitorDetails:
+                 i = new Intent(ShopDashboard.this, VisitorDetails.class);
                 i.putExtra("emailname",emailname);
                 startActivity(i);
                 break;

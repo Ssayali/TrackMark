@@ -20,6 +20,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -90,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                     else {
 
 
-                      String urlpre = "http://trackmark.in/shop/LoginAuthentication?username=" + txt_email.getText().toString() + "&password=" + txt_pass.getText().toString();
+                      String urlpre = WebServicesAPI.deployment_api+"shop/LoginAuthentication?username=" + txt_email.getText().toString() + "&password=" + txt_pass.getText().toString();
 
                       StringRequest stringRequest = new StringRequest(urlpre, new Response.Listener<String>() {
                           @Override
@@ -122,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             if(jsonObject.length()==0)
             {
-                 String url = "http://trackmark.in/shop/UserRegistration?User_Email=" + txt_email.getText().toString() + "&User_password=" + txt_pass.getText().toString() + "&User_Address=" + txt_add.getText().toString() + "&User_cno=" + txt_cno.getText().toString() + "";
+                 String url = WebServicesAPI.deployment_api+"shop/UserRegistration?User_Email=" + txt_email.getText().toString() + "&User_password=" + txt_pass.getText().toString() + "&User_Address=" + txt_add.getText().toString() + "&User_cno=" + txt_cno.getText().toString() + "";
                         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

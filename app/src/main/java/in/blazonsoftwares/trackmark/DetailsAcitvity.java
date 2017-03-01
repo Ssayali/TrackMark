@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,7 +36,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
 
 
 public class DetailsAcitvity extends AppCompatActivity {
@@ -47,8 +50,6 @@ public class DetailsAcitvity extends AppCompatActivity {
     Button bOrder;
     String imgpath;
 
-    // Alert Dialog Manager & session object
-    //AddToSessionManagement session;
 
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -62,7 +63,6 @@ public class DetailsAcitvity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_acitvity);
-
         Productid= getIntent().getExtras().getString("Productid");
 
         lbl_pname= (TextView) findViewById(R.id.lbl_pname);
@@ -72,7 +72,7 @@ public class DetailsAcitvity extends AppCompatActivity {
 
         getdata();
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
        ///code for add to cart
         //session = new AddToSessionManagement(getApplicationContext());
         //Toast.makeText(this,"check log...."+session.getallproductdetails(),Toast.LENGTH_LONG).show();
@@ -117,10 +117,21 @@ public class DetailsAcitvity extends AppCompatActivity {
 
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
+                // if this doesn't work as desired, another possibility is to call `finish()` here.
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void getdata() {
         int productcode=Integer.parseInt(Productid);
-        String url = "http://trackmark.in/shop/ProductDetailsByPid?prodId="+productcode;
+        String url = WebServicesAPI.deployment_api+"shop/ProductDetailsByPid?prodId="+productcode;
          StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -151,8 +162,8 @@ public class DetailsAcitvity extends AppCompatActivity {
 
                         }
                         else {
-                            Picasso.with(this).load("http://trackmark.in" + vehicle_info.getString(Configvolley.Product_Image)).into(img_product);
-                            imgpath="http://trackmark.in"+vehicle_info.getString(Configvolley.Product_Image);
+                            Picasso.with(this).load(WebServicesAPI.deployment_api+ vehicle_info.getString(Configvolley.Product_Image)).into(img_product);
+                            imgpath=WebServicesAPI.deployment_api+vehicle_info.getString(Configvolley.Product_Image);
                         }
                         lbl_pprice.setTextSize(20);
                         lbl_pspecification.setTextSize(20);

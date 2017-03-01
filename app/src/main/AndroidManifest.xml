@@ -17,8 +17,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -34,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NavigateActivity" />
-        <!--<activity android:name=".WebViewTrackMark" />-->
+        <!-- <activity android:name=".WebViewTrackMark" /> -->
         <activity
             android:name=".WebViewTrackMark"
             android:label="@string/title_activity_Web_view"
@@ -64,7 +62,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".VisitorDetails"></activity>
     </application>
 
 </manifest>

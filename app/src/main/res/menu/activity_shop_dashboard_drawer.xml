@@ -20,6 +20,10 @@
             android:icon="@drawable/chat"
             android:title="Chatting" />
 
+        <item
+            android:id="@+id/VisitorDetails"
+            android:icon="@drawable/profile"
+            android:title="Visitor Details" />
 
 
     </group>

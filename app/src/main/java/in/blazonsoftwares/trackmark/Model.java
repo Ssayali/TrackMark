@@ -9,9 +9,6 @@ public class Model {
     private String Langitude;
     private String Shop_no;
 
-
-
-
     //shop variblke
     private String Product_Image;
     private String Product_No;
@@ -20,6 +17,14 @@ public class Model {
     private String Product_Spec;
     private String Product_Shopcode;
     private  String Product_MasterId;
+
+    //member variblke
+    private String Member_Code;
+    private String Member_Email;
+    private String Member_password;
+    private String Member_cno;
+    private String Member_Address;
+
 
 
     public String getLink() {
@@ -119,6 +124,26 @@ public class Model {
     public void setShop_no(String Shop_no) {this.Shop_no = Shop_no; }
 
 
+    //Member page
+    public String getMember_Code() {
+        return Member_Code;
+    }
+    public void setMember_Code(String Member_Code) {this.Member_Code = Member_Code; }
+
+    public String getMember_Email() {
+        return Member_Email;
+    }
+    public void setMember_Email(String Member_Email) {this.Member_Email = Member_Email; }
+
+    public String getMember_password() {
+        return Member_password;
+    }
+    public void setMember_password(String Member_password) {this.Member_password = Member_password; }
+
+    public String getMember_cno() {
+        return Member_cno;
+    }
+    public void setMember_cno(String Member_password) {this.Member_cno = Member_cno; }
 
 
 }

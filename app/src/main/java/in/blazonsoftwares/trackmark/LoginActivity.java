@@ -1,11 +1,7 @@
 package in.blazonsoftwares.trackmark;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,17 +15,10 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import in.blazonsoftwares.trackmark.model.WebServicesAPI;
 
@@ -48,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
-
         username = (EditText) findViewById(R.id.txt_uname);
         password = (EditText) findViewById(R.id.txt_password);
 
@@ -57,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void btnRegistrationUser_Click(View v){
-
         Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(i);
        /* try
@@ -108,14 +95,13 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "catch error ..." + ex,
                     Toast.LENGTH_SHORT).show();
         }*/
-
-
-
     }
     public void btnUserLogin_Click(View v) {
         String user=username.getText().toString();
         String pass=password.getText().toString();
-
+        pd = new ProgressDialog(LoginActivity.this);
+        pd.setMessage("Loading");
+        pd.show();
         if(user.equals("") || pass.equals(""))
         {
             Toast.makeText(LoginActivity.this, "Sorry username and password is compulsory...",
@@ -126,12 +112,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         else {
+
             String url = WebServicesAPI.deployment_api+"shop/LoginAuthentication?username=" + user + "&password=" + pass;
-            //String url="http://trackmark.in/shop/LoginAuthentication?username=om@gmail.com&password=123456";
             StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     showJSON(response);
+                    pd.dismiss();
 
                 }
             },
@@ -219,10 +206,9 @@ public class LoginActivity extends AppCompatActivity {
                 username.requestFocus();
             }
             else {
-                session.KEY_EMAIL = "" + username.getText();
-                session.createLoginSession("Blazon Test", "info@blazonsoftwares.in");
+                session.createLoginSession("Blazon_Test", username.getText().toString());
                 Intent i = new Intent(LoginActivity.this, MapsActivity.class);
-                i.putExtra("emialname", username.getText());
+                i.putExtra("emailname",session.getUserDetails().get("email"));
                 startActivity(i);
             }
 

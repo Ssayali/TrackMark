@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     android:background="@color/bgwhite"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="in.blazonsoftwares.trackmark.LoginActivity">
 
     <ImageView
@@ -23,25 +25,38 @@
         android:orientation="vertical"
         >
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email Address"
+                    android:id="@+id/txt_uname"
+                    android:text=""
+                    android:nextFocusUp="@id/txt_uname"
+                    android:nextFocusLeft="@id/txt_uname"
+                    android:layout_margin="16dp"
+                    android:singleLine="true"
+                    />
+        </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email Address"
-        android:id="@+id/txt_uname"
-        android:text=""
-        android:layout_margin="16dp"
-        />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:id="@+id/txt_password"
-        android:text=""
-        android:layout_margin="16dp"
-        />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:id="@+id/txt_password"
+                    android:text=""
+                    android:layout_margin="16dp"
+                    android:singleLine="true"
+
+                    />
+        </android.support.design.widget.TextInputLayout>
 
 
 
@@ -56,16 +71,6 @@
         android:text="Sign In">
     </Button>
 
-        <!--<Button
-            android:id="@+id/btnsignup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/bgwhite"
-            android:layout_margin="16dp"
-            android:onClick="btnRegistrationUser_Click"
-            android:text="Sign Up">
-        </Button>-->
 
         <TextView
             android:layout_width="match_parent"

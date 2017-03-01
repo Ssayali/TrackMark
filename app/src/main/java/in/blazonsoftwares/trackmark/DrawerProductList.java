@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 /**
@@ -80,7 +82,7 @@ public class DrawerProductList  extends Fragment {
     private void getdata()
     {
         int shopcode=Integer.parseInt(SessionManagement.KEY_Shopcode);
-        String url = "http://trackmark.in/Shop/ProductDetailsByid?shopid="+shopcode;
+        String url = WebServicesAPI.deployment_api+"Shop/ProductDetailsByid?shopid="+shopcode;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -107,7 +109,7 @@ public class DrawerProductList  extends Fragment {
             for(int i=0;i<jsonObject.length();i++) {
                 JSONObject vehicle_info = jsonObject.getJSONObject(i);
                     siteModel=new Model();
-                    siteModel.setProduct_Image("http://trackmark.in"+vehicle_info.getString(Configvolley.Product_Image));
+                    siteModel.setProduct_Image(WebServicesAPI.deployment_api+vehicle_info.getString(Configvolley.Product_Image));
                     siteModel.setProduct_No(vehicle_info.getString(Configvolley.Product_No));
                     siteModel.setProduct_Name(vehicle_info.getString(Configvolley.Product_Name));
                     siteModel.setProduct_price(vehicle_info.getString(Configvolley.Product_price));

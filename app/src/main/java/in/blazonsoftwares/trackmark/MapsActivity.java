@@ -66,6 +66,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -94,8 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        emailname = getIntent().getExtras().getString("emialname");
-
+        emailname = getIntent().getExtras().getString("emailname");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -119,15 +120,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 bindnewmap(arg0.getItemAtPosition(arg2).toString());
             }
         });
-
-
-
     }
-
             void bindnewmap(String productname){
-
                 String newproname=productname.replace(" ", "%20");
-                String url = "http://trackmark.in/shop/GetShopByProduct?ProductName="+newproname;
+                String url = WebServicesAPI.deployment_api +"shop/GetShopByProduct?ProductName="+newproname;
                 StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -179,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
             private void bindallproduct() {
-                  String url = "http://trackmark.in/shop/ProductNamelist";
+                  String url = WebServicesAPI.deployment_api+"shop/ProductNamelist";
                 StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -268,8 +264,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mCurrLocationMarker.remove();
         }
 
-
-
         final  LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
         Glide.with(getApplicationContext()).
@@ -326,7 +320,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void  getdata(Double latval,Double lognval){
 
-        String url = "http://trackmark.in/Shop/ShopNearDetails?latval="+latval+"&longval="+lognval;
+        String url = WebServicesAPI.deployment_api+"Shop/ShopNearDetails?latval="+latval+"&longval="+lognval;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
