@@ -102,7 +102,7 @@ String useremail="";
             requestQueue.add(stringRequest);
         }
         catch (Exception ex3){
-            Toast.makeText(VisitorDetails.this,"this is error"+ex3,Toast.LENGTH_SHORT).show();
+            Toast.makeText(VisitorDetails.this,"this is error..."+ex3,Toast.LENGTH_SHORT).show();
         }
     }
     private void showJSON(String response){
