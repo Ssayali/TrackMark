@@ -63,7 +63,11 @@
         </receiver>
 
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".VisitorDetails"></activity>
+        <activity android:name=".VisitorDetails" />
+        <activity android:name=".CartList">
+
+
+        </activity>
     </application>
 
 </manifest>

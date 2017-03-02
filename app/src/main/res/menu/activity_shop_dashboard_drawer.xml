@@ -25,6 +25,11 @@
             android:icon="@drawable/profile"
             android:title="Visitor Details" />
 
+        <item
+            android:id="@+id/CartDetails"
+            android:icon="@drawable/addcart"
+            android:title="Your Cart Items" />
+
 
     </group>
 

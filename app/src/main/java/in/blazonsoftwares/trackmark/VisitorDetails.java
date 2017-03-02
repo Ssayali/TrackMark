@@ -44,8 +44,6 @@ String useremail="";
         txt_pass=(EditText)findViewById(R.id.txt_pass);
         txt_conpass=(EditText)findViewById(R.id.txt_conpass);
 
-
-
         binddata(useremail);
 
         btn_updateddetails=(Button)findViewById(R.id.btn_updateddetails);
@@ -53,14 +51,18 @@ String useremail="";
             @Override
             public void onClick(View v) {
                 try {
-                     //   String url = WebServicesAPI.deployment_api+"shop/UpdatVisitor?User_Email='"+visitoremail.getText().toString()+"'?User_password=''?User_Name=''?User_Address='"+visitoraddress.getText().toString()+"'?User_cno='"+visitocno.getText().toString()+"'";
-                        String url = WebServicesAPI.deployment_api+"shop/UpdatVisitor?User_Email=om@gmail.com&User_password=123456&User_Name=s&User_Address=pune&User_cno=8888888";
-                        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+
+                    String  newvisitoremail=visitoremail.getText().toString().replace(" ", "%20");
+                    String  newtxt_pass=txt_pass.getText().toString().replace(" ", "%20");
+                    String  newvisitoraddress=visitoraddress.getText().toString().replace(" ", "%20");
+                    String  newvisitocno=visitocno.getText().toString().replace(" ", "%20");
+
+
+                    String url = WebServicesAPI.deployment_api+"shop/UpdatVisitor?User_Email="+newvisitoremail+"&User_password="+newtxt_pass+"&User_Name=&User_Address="+newvisitoraddress+"&User_cno="+newvisitocno;
+                    StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Toast.makeText(VisitorDetails.this, "Record Updated Successfully..." + response, Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(VisitorDetails.this, LoginActivity.class);
-                                startActivity(i);
                             }
                         },
                                 new Response.ErrorListener() {

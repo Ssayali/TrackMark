@@ -23,8 +23,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -53,17 +56,20 @@ public class DetailsAcitvity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
-    public static final String name = "name";
-    public static final String qty = "qty";
-    public static final String img = "img";
 
 
     Toolbar toolbar;
+
+    String vistormail;
+    SessionManagement session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_acitvity);
         Productid= getIntent().getExtras().getString("Productid");
+        session = new SessionManagement(getApplicationContext());
+        vistormail=session.getUserDetails().get("email");
+
 
         lbl_pname= (TextView) findViewById(R.id.lbl_pname);
         lbl_pprice= (TextView) findViewById(R.id.lbl_pprice);
@@ -101,12 +107,13 @@ public class DetailsAcitvity extends AppCompatActivity {
                     //session.checkoutuser();
                   //   session.AddProductSession(lbl_pname.getText().toString(),spQuantity.getSelectedItem().toString(),imgpath);
 
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString(name,lbl_pname.getText().toString());
-                    editor.putString(qty, spQuantity.getSelectedItem().toString());
-                    editor.putString(img, imgpath);
-                    editor.commit();
-                    Toast.makeText(DetailsAcitvity.this,lbl_pname.getText()+" Product Added Successfully.",Toast.LENGTH_LONG).show();
+                    //SharedPreferences.Editor editor = sharedpreferences.edit();
+                    //editor.putString(name,lbl_pname.getText().toString());
+                    //editor.putString(qty, spQuantity.getSelectedItem().toString());
+                    //editor.putString(img, imgpath);
+                    //editor.commit();
+                    bindcartdata(Productid,spQuantity.getSelectedItem().toString(),vistormail,lbl_pprice.getText().toString(),lbl_pname.getText().toString());
+
                 }
                 catch (Exception ex1){
                     Toast.makeText(DetailsAcitvity.this,"error : " + ex1,Toast.LENGTH_LONG).show();
@@ -116,6 +123,40 @@ public class DetailsAcitvity extends AppCompatActivity {
 
 
     }
+    private  void  bindcartdata(String productid,String qty,String email,String price,String pname){
+
+        String newproductid=productid.replace(" ", "%20");
+        String newqty=qty.replace(" ", "%20");
+        String newemail=email.replace(" ", "%20");
+        String newprice=price.replace(" ", "%20");
+        String newpname=pname.replace(" ", "%20");
+
+        String url = WebServicesAPI.deployment_api +"shop/AddToCart?productid="+newproductid+"&qty="+newqty+"&email="+newemail+"&price="+newprice+"&pname="+newpname;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(DetailsAcitvity.this,lbl_pname.getText()+" Product Added Successfully.",Toast.LENGTH_LONG).show();
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        int socketTimeout = 30000;
+                        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        Toast.makeText(DetailsAcitvity.this,"error call...."+error,Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(DetailsAcitvity.this);
+        requestQueue.add(stringRequest);
+
+    }
+
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -159,7 +200,6 @@ public class DetailsAcitvity extends AppCompatActivity {
 
                         if(vehicle_info.getString(Configvolley.Product_Image).equals("")){
                             Picasso.with(DetailsAcitvity.this).load(R.drawable.logowithout).into(img_product);
-
                         }
                         else {
                             Picasso.with(this).load(WebServicesAPI.deployment_api+ vehicle_info.getString(Configvolley.Product_Image)).into(img_product);

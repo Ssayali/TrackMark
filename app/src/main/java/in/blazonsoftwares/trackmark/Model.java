@@ -8,6 +8,7 @@ public class Model {
     private String Latitude;
     private String Langitude;
     private String Shop_no;
+    private String Product_qty;
 
     //shop variblke
     private String Product_Image;
@@ -18,6 +19,7 @@ public class Model {
     private String Product_Shopcode;
     private  String Product_MasterId;
 
+
     //member variblke
     private String Member_Code;
     private String Member_Email;
@@ -25,6 +27,12 @@ public class Model {
     private String Member_cno;
     private String Member_Address;
 
+    //Cart varible
+    private String Cart_Product_Id;
+    private String Cart_Product_qty;
+    private String Cart_Product_Price;
+    private String Cart_Product_Name;
+    private String Cart_Code;
 
 
     public String getLink() {
@@ -144,6 +152,34 @@ public class Model {
         return Member_cno;
     }
     public void setMember_cno(String Member_password) {this.Member_cno = Member_cno; }
+
+//add to cart
+    public String getCart_Code() {
+    return Cart_Code;
+}
+    public void setCart_Code(String Cart_Code) {this.Cart_Code = Cart_Code; }
+
+    public String getCart_Product_Id() {
+        return Cart_Product_Id;
+    }
+    public void setCart_Product_Id(String Cart_Product_Id) {this.Cart_Product_Id = Cart_Product_Id; }
+
+    public String getCart_Product_qty() {
+        return Cart_Product_qty;
+    }
+    public void setCart_Product_qty(String Cart_Product_qty) {this.Cart_Product_qty = Cart_Product_qty; }
+
+    public String getCart_Product_Price() {
+        return Cart_Product_Price;
+    }
+    public void setCart_Product_Price(String Cart_Product_Price) {this.Cart_Product_Price = Cart_Product_Price; }
+
+    public String getCart_Product_Name() {
+        return Cart_Product_Name;
+    }
+    public void setCart_Product_Name(String Cart_Product_Name) {this.Cart_Product_Name = Cart_Product_Name; }
+
+
 
 
 }

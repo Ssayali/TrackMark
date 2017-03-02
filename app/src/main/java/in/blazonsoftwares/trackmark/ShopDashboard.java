@@ -136,6 +136,11 @@ public class ShopDashboard extends AppCompatActivity
                 startActivity(i);
                 finish();
                 break;
+
+            case R.id.CartDetails:
+                i = new Intent(getApplicationContext(), CartList.class);
+                startActivity(i);
+                break;
         }
 
         //replacing the fragment
