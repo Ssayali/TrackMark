@@ -2,31 +2,86 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-        <ListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/lvlist"  android:background="@color/bgwhite" android:layout_alignParentEnd="true" android:layout_alignParentRight="true"/>
-    </ScrollView>
-
 
     <LinearLayout
         android:id="@+id/sss"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:weightSum="1">
 
         <Button
-            android:id="@+id/bOrder"
+            android:id="@+id/cartempty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/orange"
-            android:text="Process To Check Out"
+            android:text="Cart Empty"
             android:textAllCaps="true"
+            android:layout_weight="0.5"
+            android:layout_margin="0.2dp"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnremoveorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orange"
+            android:text="Checked Remove"
+            android:layout_weight="0.5"
+            android:textAllCaps="true"
+            android:layout_margin="0.2dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
+
+    </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sss"
+        android:id="@+id/scrollid"
+        android:fillViewport="true">
+        <ListView android:layout_height="fill_parent" android:descendantFocusability="blocksDescendants"   android:layout_width="fill_parent" android:id="@+id/lvlist"  android:background="@color/bgwhite" android:layout_alignParentEnd="true" android:layout_alignParentRight="true"/>
+    </ScrollView>
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/sss1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txttotalprice"
+            android:text="000"
+            android:layout_weight="0.5"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+        <Button
+            android:id="@+id/btnproccesscheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orange"
+            android:text="Process To Check out"
+            android:layout_weight="0.5"
+            android:textAllCaps="true"
+            android:layout_margin="0.2dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
 
     </LinearLayout>
 

@@ -44,7 +44,7 @@ import in.blazonsoftwares.trackmark.model.WebServicesAPI;
 
 public class DetailsAcitvity extends AppCompatActivity {
     String Productid;
-    TextView lbl_pname,lbl_pprice,lbl_pspecification;
+    TextView lbl_pname,lbl_pprice,lbl_pspecification,lbl_rssign;
     ImageView img_product;
 
 
@@ -70,7 +70,7 @@ public class DetailsAcitvity extends AppCompatActivity {
         session = new SessionManagement(getApplicationContext());
         vistormail=session.getUserDetails().get("email");
 
-
+        lbl_rssign=(TextView)findViewById(R.id.lbl_rssign);
         lbl_pname= (TextView) findViewById(R.id.lbl_pname);
         lbl_pprice= (TextView) findViewById(R.id.lbl_pprice);
         lbl_pspecification= (TextView) findViewById(R.id.lbl_pspecification);
@@ -79,18 +79,6 @@ public class DetailsAcitvity extends AppCompatActivity {
         getdata();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       ///code for add to cart
-        //session = new AddToSessionManagement(getApplicationContext());
-        //Toast.makeText(this,"check log...."+session.getallproductdetails(),Toast.LENGTH_LONG).show();
-
-        //Map<String,?> keys = session.productpref.getAll();
-        //Toast.makeText(this,"key store in sahared..."+keys,Toast.LENGTH_SHORT).show();
-
-        //for(Map.Entry<String,?> entry : keys.entrySet()){
-
-          //  Toast.makeText(this,"map values...."+entry.getKey() + ": " +
-           //         entry.getValue().toString(),Toast.LENGTH_LONG).show();
-        //}
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -104,14 +92,7 @@ public class DetailsAcitvity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    //session.checkoutuser();
-                  //   session.AddProductSession(lbl_pname.getText().toString(),spQuantity.getSelectedItem().toString(),imgpath);
 
-                    //SharedPreferences.Editor editor = sharedpreferences.edit();
-                    //editor.putString(name,lbl_pname.getText().toString());
-                    //editor.putString(qty, spQuantity.getSelectedItem().toString());
-                    //editor.putString(img, imgpath);
-                    //editor.commit();
                     bindcartdata(Productid,spQuantity.getSelectedItem().toString(),vistormail,lbl_pprice.getText().toString(),lbl_pname.getText().toString());
 
                 }
@@ -196,8 +177,8 @@ public class DetailsAcitvity extends AppCompatActivity {
                 JSONObject vehicle_info = jsonObject.getJSONObject(i);
                         lbl_pspecification.setText(vehicle_info.getString(Configvolley.Product_Spec));
                         lbl_pname.setText(vehicle_info.getString(Configvolley.Product_Name));
-                        lbl_pprice.setText(vehicle_info.getString(Configvolley.Product_price) + " " + getResources().getString(R.string.Rs));
-
+                        lbl_pprice.setText(vehicle_info.getString(Configvolley.Product_price));
+                        lbl_rssign.setText(" " + getResources().getString(R.string.Rs));
                         if(vehicle_info.getString(Configvolley.Product_Image).equals("")){
                             Picasso.with(DetailsAcitvity.this).load(R.drawable.logowithout).into(img_product);
                         }

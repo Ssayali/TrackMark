@@ -4,16 +4,19 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -42,6 +45,8 @@ import java.util.List;
 
 import in.blazonsoftwares.trackmark.model.WebServicesAPI;
 
+import static android.R.attr.country;
+
 public class CartList extends AppCompatActivity {
 
     private ListView lvlist;
@@ -55,6 +60,10 @@ public class CartList extends AppCompatActivity {
 
     //cart
     CheckBox checkcart;
+    Button btnremoveorder;
+    TextView description,txttotalprice;
+    MyCustomAdapter dataAdapter = null;
+    static int finalamt=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,36 +72,238 @@ public class CartList extends AppCompatActivity {
         session = new SessionManagement(getApplicationContext());
         vistormail=session.getUserDetails().get("email");
 
+
         imageLoader = ImageLoader.getInstance();
         lvlist=(ListView) findViewById(R.id.lvlist);
-        getdata();
+       getdata();
 
-        /*lvlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });*/
-
-
+        btnremoveorder=(Button)findViewById(R.id.btnremoveorder);
+        description=(TextView)findViewById(R.id.description);
         checkcart=(CheckBox)findViewById(R.id.checkcart);
-        lvlist.setOnClickListener(new View.OnClickListener() {
+        txttotalprice = (TextView) findViewById(R.id.txttotalprice);
+
+
+
+        Button myButton = (Button) findViewById(R.id.btnremoveorder);
+        myButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                /*this.parent = parent;
-                this.listener = listener;
-                if(v.getId() == checkcart.getId()) {
-                    listener.onClickCheck(parent.orderItemInfoFilterList.get(getAdapterPosition()).getItem(), parent.orderItemInfoFilterList.get(getAdapterPosition()).getProductName(),parent.orderItemInfoFilterList.get(getAdapterPosition()).getQty());
-                }*/
+
+                StringBuffer responseText = new StringBuffer();
+                responseText.append("The following were selected to remove from cart ...\n");
+                ArrayList<Country> countryList = dataAdapter.countryList;
+                for (int i = 0; i < countryList.size(); i++) {
+                    Country country = countryList.get(i);
+                    if (country.isSelected()) {
+                        RemoveFromCart(country.getProductCode());
+                        responseText.append("\n" + country.getName());
+                    }
+                }
+
+                Toast.makeText(getApplicationContext(),
+                        responseText, Toast.LENGTH_LONG).show();
 
             }
         });
 
+
+        myButton = (Button) findViewById(R.id.cartempty);
+        myButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                CartEmpty(vistormail);
+            }
+        });
+
+
+        myButton = (Button) findViewById(R.id.btnproccesscheck);
+        myButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                Toast.makeText(getApplicationContext(),
+                        "Process Checkout comming soon", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
+    private class MyCustomAdapter extends ArrayAdapter<Country> {
+        private ArrayList<Country> countryList;
+
+        public MyCustomAdapter(Context context, int textViewResourceId,
+                               ArrayList<Country> countryList) {
+            super(context, textViewResourceId, countryList);
+            this.countryList = new ArrayList<Country>();
+            this.countryList.addAll(countryList);
+        }
+
+        private class CartViewHolder {
+            TextView code;
+            CheckBox check1;
+            TextView Price,productqty,producttotal;
+
+
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            CartViewHolder holder = null;
+            Log.v("ConvertView", String.valueOf(position));
+
+            if(convertView == null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                convertView = vi.inflate(R.layout.cartrow, null);
+
+                holder = new CartViewHolder();
+                holder.code = (TextView) convertView.findViewById(R.id.description);
+                holder.check1 = (CheckBox) convertView.findViewById(R.id.checkcart);
+                holder.Price = (TextView) convertView.findViewById(R.id.sitename);
+                holder.productqty = (TextView) convertView.findViewById(R.id.productqty);
+                holder.producttotal = (TextView) convertView.findViewById(R.id.producttotal);
+
+                convertView.setTag(holder);
+
+                holder.check1.setOnClickListener( new View.OnClickListener() {
+                    public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v ;
+                        Country country = (Country) cb.getTag();
+                        country.setSelected(cb.isChecked());
+                    }
+                });
+
+            }
+            else {
+                holder = (CartViewHolder) convertView.getTag();
+            }
+
+            Country country = countryList.get(position);
+            holder.code.setText(country.getCode() );
+            holder.check1.setChecked(country.isSelected());
+            holder.check1.setTag(country);
+            holder.Price.setText(country.getPrice());
+
+            holder.productqty.setText(" x "+country.getqty());
+            holder.producttotal.setText(country.getTotal());
+
+
+            holder.code.setTextSize(25);
+            holder.Price.setTextSize(17);
+            holder.productqty.setTextSize(17);
+
+            holder.producttotal.setTextSize(19);
+            holder.code.setTextColor(Color.parseColor("#1987fa"));
+            holder.producttotal.setTextColor(Color.parseColor("#800000"));
+
+
+
+            return convertView;
+        }
+
+    }
+
+
+    private void RemoveFromCart(String cardcode)
+    {
+        String  newcardcode=cardcode.toString().replace(" ", "%20");
+        String url = WebServicesAPI.deployment_api+"shop/RemoveFromCart?Cartcode="+newcardcode;
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                String url = WebServicesAPI.deployment_api+"Shop/getCartDetails?username="+vistormail;
+                StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        showJSON(response);
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                int socketTimeout = 30000; // 30 seconds. You can change it
+                                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                Toast.makeText(CartList.this,"error...."+error,Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                RequestQueue requestQueue = Volley.newRequestQueue(CartList.this);
+                requestQueue.add(stringRequest);
+
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        int socketTimeout = 30000; // 30 seconds. You can change it
+                        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        Toast.makeText(CartList.this,"error call...."+error,Toast.LENGTH_LONG).show();
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(CartList.this);
+        requestQueue.add(stringRequest);
+
+    }
+
+    private void CartEmpty(String visitoremail)
+    {
+        //String  newvisitoremail=visitoremail.toString().replace(" ", "%20");
+        String url = WebServicesAPI.deployment_api+"shop/CartEmpty?visitoremail="+visitoremail;
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                String url = WebServicesAPI.deployment_api+"Shop/getCartDetails?username="+vistormail;
+                StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        showJSON(response);
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                int socketTimeout = 30000; // 30 seconds. You can change it
+                                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                Toast.makeText(CartList.this,"error...."+error,Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                RequestQueue requestQueue = Volley.newRequestQueue(CartList.this);
+                requestQueue.add(stringRequest);
+
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        int socketTimeout = 30000; // 30 seconds. You can change it
+                        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        Toast.makeText(CartList.this,"error call...."+error,Toast.LENGTH_LONG).show();
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(CartList.this);
+        requestQueue.add(stringRequest);
+    }
+
+
 
     private void getdata()
     {
-        //int shopcode=1;
       String url = WebServicesAPI.deployment_api+"Shop/getCartDetails?username="+vistormail;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
@@ -115,126 +326,55 @@ public class CartList extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+
+
     private void showJSON(String response){
 
         try {
 
             JSONArray jsonObject = new JSONArray(response);
-             siteModelList=new ArrayList<>();
-            for(int i=0;i<jsonObject.length();i++) {
+            siteModelList = new ArrayList<>();
+            finalamt = 0;
+            ArrayList<Country> countryList = new ArrayList<Country>();
+            if (jsonObject.length() == 0) {
+                Toast.makeText(CartList.this,"Cart Is Empty....",Toast.LENGTH_SHORT).show();
+
+            }
+            else
+            {
+
+            for (int i = 0; i < jsonObject.length(); i++) {
                 JSONObject vehicle_info = jsonObject.getJSONObject(i);
-                siteModel=new Model();
+                siteModel = new Model();
                 siteModel.setCart_Product_Name(vehicle_info.getString(Configvolley.Cart_Product_Name));
                 siteModel.setCart_Product_Price(vehicle_info.getString(Configvolley.Cart_Product_Price));
                 siteModel.setCart_Product_qty(vehicle_info.getString(Configvolley.Cart_Product_qty));
 
+                String totapprice = "" + (Integer.parseInt(vehicle_info.getString(Configvolley.Cart_Product_Price).trim()) * Integer.parseInt(vehicle_info.getString(Configvolley.Cart_Product_qty).trim()));
+                finalamt = finalamt + Integer.parseInt(totapprice);
+                Country country = new Country(vehicle_info.getString(Configvolley.Cart_Product_Name), i + "", false, vehicle_info.getString(Configvolley.Cart_Product_Price), vehicle_info.getString(Configvolley.Cart_Product_qty), totapprice, vehicle_info.getString(Configvolley.Cart_Code));
+                countryList.add(country);
+
                 siteModelList.add(siteModel);
             }
-            showdata(siteModelList);
+
+
+
+        }
+            lvlist.setAdapter(null);
+            txttotalprice.setText(finalamt + " " + getResources().getString(R.string.Rs));
+            txttotalprice.setTextColor(Color.parseColor("#2E4925"));
+            txttotalprice.setTextSize(23);
+            dataAdapter = new MyCustomAdapter(this,
+                    R.layout.cartrow, countryList);
+            lvlist.setAdapter(dataAdapter);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
-    public void showdata(List<Model> result) {
-        if(result!=null) {
-            CartList.SiteAdapter adapter = new CartList.SiteAdapter(this, R.layout.cartrow, result);
-            lvlist.setAdapter(adapter);
-        }
-        else
-        {
-            new AlertDialog.Builder(CartList.this)
-
-                    .setTitle("NO INTERNET CONNECTION")
-                    .setMessage("Click Yes for Settings")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
-                        }
-
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .show();
-
-        }
-    }
-    public class SiteAdapter extends ArrayAdapter {
-
-        private  List<Model> siteModelList;
-        private  int resource;
-        private LayoutInflater inflater;
-        public SiteAdapter(Context context, int resource, List<Model> objects) {
-            super(context, resource, objects);
-            siteModelList=objects;
-            this.resource=resource;
-            inflater= (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            CartList.SiteAdapter.ViewHolder holder=null;
-
-            imageLoader.init(ImageLoaderConfiguration.createDefault(getContext()));
-            if(convertView==null)
-            {
-                holder=new CartList.SiteAdapter.ViewHolder();
-                convertView=inflater.inflate(resource,null);
-
-               // holder.Product_Image= (ImageView) convertView.findViewById(R.id.logo);
-                holder.Product_No= (TextView) convertView.findViewById(R.id.sitename);
-                holder.Product_Name=(TextView)convertView.findViewById(R.id.description);
-
-                convertView.setTag(holder);
-            }else
-            {
-                holder=(CartList.SiteAdapter.ViewHolder)convertView.getTag();
-            }
-
-            final ProgressBar pgbar=(ProgressBar)convertView.findViewById(R.id.pgBar);
-            holder.Product_No.setText( getResources().getString(R.string.Rs)+" "+siteModelList.get(position).getCart_Product_Price());
-            holder.Product_Name.setText(siteModelList.get(position).getCart_Product_Name()+" ("+siteModelList.get(position).getCart_Product_qty()+") ");
-          //  holder.productqty.setText(siteModelList.get(position).getProduct_qty());
 
 
-            holder.Product_Name.setTextSize(25);
-            holder.Product_No.setTextSize(17);
-
-            holder.Product_Name.setTextColor(Color.parseColor("#1987fa"));
-           /* ImageLoader.getInstance().displayImage(siteModelList.get(position).getProduct_Image(), holder.Product_Image, new ImageLoadingListener() {
-                public void onLoadingStarted(String imageUri, View view) {
-                    pgbar.setVisibility(view.VISIBLE);
-                }
-
-
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    pgbar.setVisibility(view.GONE);
-                }
-
-
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    pgbar.setVisibility(view.GONE);
-                }
-
-
-                public void onLoadingCancelled(String imageUri, View view) {
-                    pgbar.setVisibility(view.GONE);
-                }
-            });*/
-            return convertView;
-        }
-        class ViewHolder
-        {
-           // private ImageView Product_Image;
-            private TextView Product_No;
-            private TextView Product_Name;
-
-
-        }
-    }
 }

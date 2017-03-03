@@ -17,10 +17,11 @@
 
         >
         <CheckBox
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="20dp"
             android:gravity="center"
             android:id="@+id/checkcart"
+            android:focusable="false"
             android:layout_marginTop="15dp"
             />
 
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
+        android:paddingLeft="10dp"
         >
 
         <TextView
@@ -36,26 +37,56 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/description" />
+            android:id="@+id/description"
+             />
 
-        <TextView
-             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Medium Text"
-            android:id="@+id/sitename" />
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            >
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_weight="0.05"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:id="@+id/sitename"
+                />
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:id="@+id/productqty"
+                />
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_weight="0.9"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:id="@+id/producttotal"
+                />
+
+
+        </LinearLayout>
 
 
 
-         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/removecart"
-            android:layout_gravity="right"
 
-            />
 
     </LinearLayout>
 
