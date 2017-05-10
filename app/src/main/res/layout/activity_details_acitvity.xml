@@ -49,7 +49,6 @@
                 android:id="@+id/lbl_rssign"
                 />
 
-
         </LinearLayout>
 
 
@@ -77,19 +76,13 @@
             android:layout_alignParentBottom="true"
             android:weightSum="1">
 
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:text="Quantity"/>
-
             <Spinner
                 android:id="@+id/spQuantity"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:entries="@array/spinnerItems"
+                android:layout_margin="3dp"
                 />
 
 
@@ -97,12 +90,30 @@
                 android:id="@+id/bOrder"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.3"
                 android:background="@color/orange"
                 android:text="Add To Cart"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
+                android:layout_margin="3dp"
                 android:textStyle="bold"/>
+
+
+
+            <Button
+                android:id="@+id/btnyourcart"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:background="@color/orange"
+                android:text="Your Cart"
+                android:textAllCaps="true"
+                android:layout_margin="3dp"
+                android:textColor="@android:color/white">
+
+
+            </Button>
+
 
         </LinearLayout>
 

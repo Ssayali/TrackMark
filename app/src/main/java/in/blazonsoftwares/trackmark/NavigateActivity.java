@@ -44,14 +44,13 @@ public class NavigateActivity extends AppCompatActivity implements ConnectivityR
                 pd.show();
                 session = new SessionManagement(getApplicationContext());
                 try{
-
-                    //Toast.makeText(NavigateActivity.this,"1..........."+session.getUserDetails().get("email"),Toast.LENGTH_LONG).show();
-                    if(session.isLoggedIn()) {
+                   if(session.isLoggedIn()) {
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             public void run() {
                                 pd.dismiss();
                                 Intent i = new Intent(NavigateActivity.this, MapsActivity.class);
+                               // Intent i = new Intent(NavigateActivity.this, MapsNavigationActivity.class);
                                 i.putExtra("emailname",session.getUserDetails().get("email"));
                                 startActivity(i);
                                 overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);

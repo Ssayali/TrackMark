@@ -20,6 +20,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +32,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -84,6 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //imagage view code
     SupportMapFragment mapFragment;
     String emailname;
+     public static String checkpass="",checkproducname="";
 
     //image url code
     private String ImageUrl = "https://saneenergyproject.files.wordpress.com/2014/03/map-pin.png?w=176&h=300";
@@ -91,9 +96,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private View mCustomMarkerView;
     private ImageView mMarkerImageView;
     ArrayList<String> stringArrayList = new ArrayList<String>();
+    AutoCompleteTextView autocompetetext;
 
-    @Override
+
+
+            @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         emailname = getIntent().getExtras().getString("emailname");
@@ -109,17 +118,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //all product list bind
         bindallproduct();
 
-        AutoCompleteTextView autocompetetext = (AutoCompleteTextView) findViewById(R.id.autocomplete_country);
+        autocompetetext = (AutoCompleteTextView) findViewById(R.id.autocomplete_country);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, stringArrayList);
         autocompetetext.setAdapter(adapter);
 
         autocompetetext.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                mMap.clear();
-                bindnewmap(arg0.getItemAtPosition(arg2).toString());
+                    mMap.clear();
+                    bindnewmap(arg0.getItemAtPosition(arg2).toString());
+                    checkproducname = arg0.getItemAtPosition(arg2).toString();
             }
         });
+
+        autocompetetext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()==0)
+                {
+                    Intent i = new Intent(MapsActivity.this, MapsActivity.class);
+                    i.putExtra("emailname",emailname);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+
     }
             void bindnewmap(String productname){
                 String newproname=productname.replace(" ", "%20");
@@ -133,6 +169,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                int socketTimeout = 30000;
+                                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                Toast.makeText(MapsActivity.this,"error call...."+error,Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -144,16 +185,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             private void showJSONshopdetails(String response){
                 try {
                     JSONArray jsonObject = new JSONArray(response);
-
-
                     for(int i=0;i<jsonObject.length();i++) {
                         JSONObject vehicle_info = jsonObject.getJSONObject(i);
-
                       try {
-
                             Double newShop_Latval = Double.parseDouble(vehicle_info.getString(Configvolley.Latitude));
                             Double newShop_Langval = Double.parseDouble(vehicle_info.getString(Configvolley.Langitude));
-
                             LatLng latLng2 = new LatLng(newShop_Latval, newShop_Langval);
                             MarkerOptions markerOptions2 = new MarkerOptions();
                             markerOptions2 = new MarkerOptions();
@@ -162,6 +198,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             markerOptions2.isVisible();
                             markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                             mCurrLocationMarker2 = mMap.addMarker(markerOptions2);
+
+                            checkpass="ProductNameWiseSearch";
                         }
                         catch (Exception ex3){
                             Toast.makeText(MapsActivity.this, "erior   ....." + ex3, Toast.LENGTH_LONG).show();
@@ -170,10 +208,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(10.0f));
-
             }
+
+
             private void bindallproduct() {
                   String url = WebServicesAPI.deployment_api+"shop/ProductNamelist";
                 StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
@@ -185,6 +223,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                int socketTimeout = 30000;
+                                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                Toast.makeText(MapsActivity.this,"error call...."+error,Toast.LENGTH_LONG).show();
                             }
                         });
                 RequestQueue requestQueue = Volley.newRequestQueue(MapsActivity.this);
@@ -266,7 +309,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final  LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         final MarkerOptions markerOptions = new MarkerOptions();
-        Glide.with(getApplicationContext()).
+       Glide.with(getApplicationContext()).
                 load(ImageUrl)
                 .asBitmap()
                 .fitCenter()
@@ -276,7 +319,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(mCustomMarkerView, bitmap))));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
                     }
                 });
 
@@ -295,6 +338,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
+
+
          mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -303,10 +348,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(markerloc.equals("m0")){}
                     else {
 
-                        Intent i = new Intent(MapsActivity.this, ShopDashboard.class);
-                        i.putExtra("shopname", marker.getTitle());
-                        i.putExtra("emailname", emailname);
-                        startActivity(i);
+                            if(checkpass==""){
+                                Intent i = new Intent(MapsActivity.this, ShopDashboard.class);
+                                i.putExtra("shopname", marker.getTitle());
+                                i.putExtra("emailname", emailname);
+                                startActivity(i);
+                                checkpass="";
+                            }
+                        else
+                            {
+                                    bindproductnamewiseshop(checkproducname,marker.getTitle());
+                                   checkpass="ProductNameWiseSearch";
+                            }
+
+
                     }
                 }
                 catch (Exception ex1){
@@ -318,18 +373,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void  getdata(Double latval,Double lognval){
+     private void  bindproductnamewiseshop(String productname,String shopcode){
+         checkpass="";
+         String newshopcode=shopcode.replace(" ", "%20");
+         String newproductname=productname.replace(" ", "%20");
+         String url = WebServicesAPI.deployment_api+"Shop/getMapWiseProductId?productname="+newproductname+"&shopcode="+newshopcode;
+                StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       showProductwiseJSON(response);
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                int socketTimeout = 30000;
+                                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                Toast.makeText(MapsActivity.this,"error call...."+error,Toast.LENGTH_LONG).show();
+                            }
+                        });
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
+      }
 
+            private void showProductwiseJSON(String response){
+                try {
+                    JSONArray jsonObject = new JSONArray(response);
+                    for(int i=0;i<jsonObject.length();i++) {
+                        JSONObject vehicle_info = jsonObject.getJSONObject(i);
+                        Intent i1=new Intent(MapsActivity.this,DetailsAcitvity.class);
+                        i1.putExtra("Productid", vehicle_info.getString(Configvolley.Product_MasterId));
+                        checkpass="";
+                        startActivity(i1);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+    private void  getdata(Double latval,Double lognval){
+        checkpass="";
         String url = WebServicesAPI.deployment_api+"Shop/ShopNearDetails?latval="+latval+"&longval="+lognval;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 showJSON(response);
+                showAddvertisement(response);
+
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        int socketTimeout = 30000;
+                        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        Toast.makeText(MapsActivity.this,"error call...."+error,Toast.LENGTH_LONG).show();
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -339,33 +447,67 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void showJSON(String response){
         try {
             JSONArray jsonObject = new JSONArray(response);
-
-
             for(int i=0;i<jsonObject.length();i++) {
                 JSONObject vehicle_info = jsonObject.getJSONObject(i);
-
                 try {
-
                     Double newShop_Latval = Double.parseDouble(vehicle_info.getString(Configvolley.Latitude));
                     Double newShop_Langval = Double.parseDouble(vehicle_info.getString(Configvolley.Langitude));
+                   LatLng latLng2 = new LatLng(newShop_Latval, newShop_Langval);
+                   MarkerOptions    markerOptions2 = new MarkerOptions();
+                   markerOptions2.position(latLng2);
+                   markerOptions2.title(vehicle_info.getString(Configvolley.Shop_no));
+                   markerOptions2.isVisible();
+                   markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-                    LatLng latLng2 = new LatLng(newShop_Latval, newShop_Langval);
-                    MarkerOptions markerOptions2 = new MarkerOptions();
-                    markerOptions2 = new MarkerOptions();
-                    markerOptions2.position(latLng2);
-                    markerOptions2.title(vehicle_info.getString(Configvolley.Shop_no));
-                    markerOptions2.isVisible();
-                    markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                     mCurrLocationMarker2 = mMap.addMarker(markerOptions2);
                 }
                 catch (Exception ex3){
-                    Toast.makeText(MapsActivity.this, "erior   ....." + ex3, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MapsActivity.this, "error here   " + ex3, Toast.LENGTH_LONG).show();
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+            private void showAddvertisement(String response){
+                try {
+                    JSONArray jsonObject = new JSONArray(response);
+                   for(int i=0;i<jsonObject.length();i++) {
+                        JSONObject vehicle_info = jsonObject.getJSONObject(i);
+                        try {
+                            Double newShop_Latval = Double.parseDouble(vehicle_info.getString(Configvolley.Latitude))+00.000120;
+                            Double newShop_Langval = Double.parseDouble(vehicle_info.getString(Configvolley.Langitude))+00.000250;
+                      final String  newtitile=vehicle_info.getString(Configvolley.Shop_no);
+                            String newshopadd=WebServicesAPI.deployment_api+vehicle_info.getString(Configvolley.Off_Image);
+
+                             final LatLng latLng2 = new LatLng(newShop_Latval, newShop_Langval);
+
+                            Glide.with(getApplicationContext()).
+                                    load(newshopadd)
+                                    .asBitmap()
+                                    .fitCenter()
+                                    .into(new SimpleTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                            mMap.addMarker(new MarkerOptions()
+                                                    .position(latLng2)
+                                                    .title(newtitile)
+                                                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(mCustomMarkerView, bitmap))));
+
+                                        }
+                                    });
+                         }
+                        catch (Exception ex3){
+                            Toast.makeText(MapsActivity.this, "error here   " + ex3, Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
 
 
     private Bitmap getMarkerBitmapFromView(View view, Bitmap bitmap) {
@@ -374,7 +516,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.buildDrawingCache();
         Bitmap returnedBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(),
-                Bitmap.Config.ARGB_8888);
+                Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(returnedBitmap);
         canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
         Drawable drawable = view.getBackground();
@@ -383,6 +525,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         view.draw(canvas);
         return returnedBitmap;
     }
+
+
+
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
@@ -392,16 +537,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Asking user if explanation is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             } else {
-                // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
@@ -417,16 +559,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted. Do the
-                    // contacts-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
@@ -434,16 +571,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
 
                 } else {
-
-                    // Permission denied, Disable the functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
-
-
         }
     }
+    public void cleartextclick(View v) {
+        checkpass="";
+        autocompetetext.setText("");
+     }
 
 
 }

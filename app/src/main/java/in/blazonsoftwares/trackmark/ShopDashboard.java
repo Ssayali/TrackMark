@@ -3,6 +3,7 @@ package in.blazonsoftwares.trackmark;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,9 +23,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
+
+import in.blazonsoftwares.trackmark.model.WebServicesAPI;
 
 public class ShopDashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +46,7 @@ public class ShopDashboard extends AppCompatActivity
 
     // Alert Dialog Manager & session object
     SessionManagement session;
+    static String ownermail="";
 
 
 
@@ -44,12 +57,8 @@ public class ShopDashboard extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         shopname = getIntent().getExtras().getString("shopname");
         emailname = getIntent().getExtras().getString("emailname");
-
-
 
         SessionManagement newss=new SessionManagement();
         newss.KEY_Shopcode=shopname;
@@ -68,10 +77,45 @@ public class ShopDashboard extends AppCompatActivity
         welcomeusename.setText(emailname);
 
         displaySelectedScreen(R.id.ShopDetails);
+        bindshopmailid(shopname);
     }
+
+
+    private void bindshopmailid(String Shopcode) {
+        int productcode=Integer.parseInt(Shopcode);
+        String url = WebServicesAPI.deployment_api +"USER/UseralldetailsByshopid?shopid="+productcode;
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                showJSON(response);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(ShopDashboard.this);
+        requestQueue.add(stringRequest);
+    }
+    private void showJSON(String response){
+        try {
+            JSONArray jsonObject = new JSONArray(response);
+            for(int i=0;i<jsonObject.length();i++) {
+                JSONObject vehicle_info = jsonObject.getJSONObject(i);
+                ownermail=vehicle_info.getString(Configvolley.User_Email);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void onBackPressed() {
+        MapsActivity mymap=new MapsActivity();
+        mymap.checkpass="";
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -90,7 +134,8 @@ public class ShopDashboard extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
+        MapsActivity mymap=new MapsActivity();
+        mymap.checkpass="";
         return super.onOptionsItemSelected(item);
     }
 
@@ -111,7 +156,10 @@ public class ShopDashboard extends AppCompatActivity
                 fragment = new DrawerProductList();
                 break;
             case R.id.Chatting:
-                fragment = new DrawerChatting();
+                ownermail= ownermail.replace(".", "-");
+                UserDetails.chatWith=""+ownermail;
+                Intent i1 = new Intent(ShopDashboard.this, Chat.class);
+                startActivity(i1);
                 break;
             case R.id.AboutUs:
                 fragment = new DrawerAboutUs();
@@ -120,6 +168,8 @@ public class ShopDashboard extends AppCompatActivity
                 fragment = new DrawerContactUs();
                 break;
             case R.id.GotoMap:
+                MapsActivity mymap=new MapsActivity();
+                mymap.checkpass="";
                 Intent i = new Intent(ShopDashboard.this, MapsActivity.class);
                 i.putExtra("emailname",emailname);
                 startActivity(i);

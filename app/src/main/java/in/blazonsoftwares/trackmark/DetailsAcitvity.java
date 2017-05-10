@@ -8,14 +8,17 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,7 +53,7 @@ public class DetailsAcitvity extends AppCompatActivity {
 
     //add to
     Spinner spQuantity;
-    Button bOrder;
+    Button bOrder,btnyourcart;
     String imgpath;
 
 
@@ -58,14 +61,31 @@ public class DetailsAcitvity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs" ;
 
 
-    Toolbar toolbar;
-
     String vistormail;
     SessionManagement session;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_details_acitvity);
+
+   /*     ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(actionBar.getDisplayOptions()
+                | ActionBar.DISPLAY_SHOW_CUSTOM);
+        ImageView imageView = new ImageView(actionBar.getThemedContext());
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        imageView.setImageResource(R.drawable.cart);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT, Gravity.RIGHT
+                | Gravity.CENTER_VERTICAL);
+        layoutParams.rightMargin = 40;
+        imageView.setLayoutParams(layoutParams);
+        actionBar.setCustomView(imageView);
+*/
+
         Productid= getIntent().getExtras().getString("Productid");
         session = new SessionManagement(getApplicationContext());
         vistormail=session.getUserDetails().get("email");
@@ -81,10 +101,6 @@ public class DetailsAcitvity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
-       // Map<String,?> keys = sharedpreferences.getAll();
-        //Toast.makeText(this,"key store in sahared..."+keys,Toast.LENGTH_SHORT).show();
-
 
         spQuantity = (Spinner) findViewById(R.id.spQuantity);
         bOrder = (Button) findViewById(R.id.bOrder);
@@ -103,6 +119,28 @@ public class DetailsAcitvity extends AppCompatActivity {
         });
 
 
+        btnyourcart = (Button) findViewById(R.id.btnyourcart);
+
+        btnyourcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent i = new Intent(DetailsAcitvity.this, CartList.class);
+                    startActivity(i);
+                }
+                catch (Exception ex1){
+                    Toast.makeText(DetailsAcitvity.this,"error : " + ex1,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        MapsActivity mymap = new MapsActivity();
+        mymap.checkpass = "ProductNameWiseSearch";
+        super.onBackPressed();
     }
     private  void  bindcartdata(String productid,String qty,String email,String price,String pname){
 
@@ -113,6 +151,7 @@ public class DetailsAcitvity extends AppCompatActivity {
         String newpname=pname.replace(" ", "%20");
 
         String url = WebServicesAPI.deployment_api +"shop/AddToCart?productid="+newproductid+"&qty="+newqty+"&email="+newemail+"&price="+newprice+"&pname="+newpname;
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
             @Override
@@ -144,7 +183,8 @@ public class DetailsAcitvity extends AppCompatActivity {
             case android.R.id.home:
                 // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
                 // if this doesn't work as desired, another possibility is to call `finish()` here.
-                this.onBackPressed();
+               // this.onBackPressed();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

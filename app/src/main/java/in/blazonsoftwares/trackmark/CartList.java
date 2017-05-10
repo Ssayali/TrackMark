@@ -97,7 +97,7 @@ public class CartList extends AppCompatActivity {
                     Country country = countryList.get(i);
                     if (country.isSelected()) {
                         RemoveFromCart(country.getProductCode());
-                        responseText.append("\n" + country.getName());
+                        responseText.append("\n" + country.getCode());
                     }
                 }
 
@@ -337,7 +337,7 @@ public class CartList extends AppCompatActivity {
             finalamt = 0;
             ArrayList<Country> countryList = new ArrayList<Country>();
             if (jsonObject.length() == 0) {
-                Toast.makeText(CartList.this,"Cart Is Empty....",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CartList.this,"Please Add Product Into Cart ....",Toast.LENGTH_SHORT).show();
 
             }
             else
@@ -345,6 +345,7 @@ public class CartList extends AppCompatActivity {
 
             for (int i = 0; i < jsonObject.length(); i++) {
                 JSONObject vehicle_info = jsonObject.getJSONObject(i);
+
                 siteModel = new Model();
                 siteModel.setCart_Product_Name(vehicle_info.getString(Configvolley.Cart_Product_Name));
                 siteModel.setCart_Product_Price(vehicle_info.getString(Configvolley.Cart_Product_Price));

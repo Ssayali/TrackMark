@@ -34,16 +34,10 @@
                     android:layout_marginTop="9dp"
                     />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/cart"
-                android:layout_margin="10dp"
-                android:layout_alignParentRight="true"
-                />
+
             </RelativeLayout>
 
-        </android.support.v7.widget.Toolbar>-->
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

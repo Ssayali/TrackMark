@@ -17,7 +17,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+
+
     <application
+
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -64,7 +67,16 @@
 
         <activity android:name=".RegisterActivity" />
         <activity android:name=".VisitorDetails" />
-        <activity android:name=".CartList">
+        <activity android:name=".Chat">
+
+            </activity>
+
+
+        <activity android:name=".CartList"></activity>
+        <activity
+            android:name=".MapsNavigationActivity"
+            android:label="@string/title_activity_maps_navigation"
+            android:theme="@style/AppTheme.NoActionBar">
 
 
         </activity>

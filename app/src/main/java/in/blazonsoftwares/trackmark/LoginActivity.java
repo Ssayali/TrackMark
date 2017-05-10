@@ -15,6 +15,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
+        Firebase.setAndroidContext(this);
         username = (EditText) findViewById(R.id.txt_uname);
         password = (EditText) findViewById(R.id.txt_password);
 
@@ -95,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "catch error ..." + ex,
                     Toast.LENGTH_SHORT).show();
         }*/
+
     }
     public void btnUserLogin_Click(View v) {
         String user=username.getText().toString();
@@ -207,6 +210,11 @@ public class LoginActivity extends AppCompatActivity {
             }
             else {
                 session.createLoginSession("Blazon_Test", username.getText().toString());
+
+                //chat value
+                String newusername=username.getText().toString().replace(".", "-");
+                UserDetails.username = newusername;
+                UserDetails.password = password.getText().toString();
                 Intent i = new Intent(LoginActivity.this, MapsActivity.class);
                 i.putExtra("emailname",session.getUserDetails().get("email"));
                 startActivity(i);

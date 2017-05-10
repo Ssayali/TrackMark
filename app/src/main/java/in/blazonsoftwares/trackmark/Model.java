@@ -9,6 +9,10 @@ public class Model {
     private String Langitude;
     private String Shop_no;
     private String Product_qty;
+    private String Off_Image;
+
+
+
 
     //shop variblke
     private String Product_Image;
@@ -63,6 +67,13 @@ public class Model {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getOff_Image() {
+        return Off_Image;
+    }
+    public void setOff_Image(String Off_Image) {
+        this.Off_Image = Off_Image;
     }
 
 
@@ -178,8 +189,5 @@ public class Model {
         return Cart_Product_Name;
     }
     public void setCart_Product_Name(String Cart_Product_Name) {this.Cart_Product_Name = Cart_Product_Name; }
-
-
-
 
 }

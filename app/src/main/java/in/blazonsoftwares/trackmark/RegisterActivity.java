@@ -1,6 +1,8 @@
 package in.blazonsoftwares.trackmark;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,9 +18,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.Firebase;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import in.blazonsoftwares.trackmark.model.WebServicesAPI;
 
@@ -27,6 +38,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     Button btnsignin;
     EditText txt_email,txt_add,txt_cno,txt_pass,txt_conpass;
+
+    //firebase varibels
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+    String user, pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +57,11 @@ public class RegisterActivity extends AppCompatActivity {
         txt_pass=(EditText) findViewById(R.id.txt_pass);
         txt_conpass=(EditText) findViewById(R.id.txt_conpass);
 
+
+        //Firebase  initialization
+        Firebase.setAndroidContext(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         btnsignin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +145,13 @@ public class RegisterActivity extends AppCompatActivity {
 
             if(jsonObject.length()==0)
             {
-                 String url = WebServicesAPI.deployment_api+"shop/UserRegistration?User_Email=" + txt_email.getText().toString() + "&User_password=" + txt_pass.getText().toString() + "&User_Address=" + txt_add.getText().toString() + "&User_cno=" + txt_cno.getText().toString() + "";
+                storedetails();
+                String url = WebServicesAPI.deployment_api+"shop/UserRegistration?User_Email=" + txt_email.getText().toString() + "&User_password=" + txt_pass.getText().toString() + "&User_Address=" + txt_add.getText().toString() + "&User_cno=" + txt_cno.getText().toString() + "";
                         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(RegisterActivity.this, "Registration Save Successfully..." + response, Toast.LENGTH_LONG).show();
+
+                                //Toast.makeText(RegisterActivity.this, "Registration Save Successfully..." + response, Toast.LENGTH_LONG).show();
                                 Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(i);
                             }
@@ -152,6 +175,76 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void storedetails(){
+        user = txt_email.getText().toString();
+        pass = txt_pass.getText().toString();
+
+        firebaseAuth.createUserWithEmailAndPassword(user, pass)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Sorry This User Already Exist..",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+
+                            final ProgressDialog pd = new ProgressDialog(RegisterActivity.this);
+                            pd.setMessage("Loading...");
+                            pd.show();
+
+                            String url = "https://trackmark-2a9be.firebaseio.com/users.json";
+                            final String newuser= user.replace(".", "-");
+                            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+                                @Override
+                                public void onResponse(String s) {
+                                    Firebase reference = new Firebase("https://trackmark-2a9be.firebaseio.com/users");
+
+                                    if(s.equals("null")) {
+                                        reference.child(newuser).child("password").setValue(pass);
+                                        Toast.makeText(RegisterActivity.this, "Registration Save Successfully...", Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        try {
+                                            JSONObject obj = new JSONObject(s);
+
+                                            if (!obj.has(newuser)) {
+                                                reference.child(newuser).child("password").setValue(pass);
+                                                Toast.makeText(RegisterActivity.this, "New User Create Successfully...",
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(RegisterActivity.this, "username already exists", Toast.LENGTH_LONG).show();
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+
+
+                                    pd.dismiss();
+                                }
+
+                            },new Response.ErrorListener(){
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                    System.out.println("" + volleyError );
+                                    pd.dismiss();
+                                }
+                            });
+                            RequestQueue rQueue = Volley.newRequestQueue(RegisterActivity.this);
+                            rQueue.add(request);
+
+
+
+                        }
+
+                    }
+                });
+
+
     }
 
 }

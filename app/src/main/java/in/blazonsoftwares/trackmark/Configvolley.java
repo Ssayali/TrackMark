@@ -32,6 +32,8 @@ public class Configvolley {
     public static final String Latitude = "Latitude";
     public static final String Langitude = "Langitude";
     public static final String Shop_no = "Shop_no";
+    public static final String Off_Image = "Off_Image";
+
 
     //member pojo class
     public static final String Member_Code = "Member_Code";

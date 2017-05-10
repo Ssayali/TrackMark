@@ -18,7 +18,7 @@
         <item
             android:id="@+id/Chatting"
             android:icon="@drawable/chat"
-            android:title="Chatting" />
+            android:title="Chat with shop Owner" />
 
         <item
             android:id="@+id/VisitorDetails"

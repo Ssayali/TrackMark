@@ -37,6 +37,7 @@
     <string name="delete_item_message">Are you sure you want to delete this item?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="title_activity_maps_navigation">MapsNavigationActivity</string>
 
 
 </resources>
