@@ -60,7 +60,7 @@ public class DrawerOwnerDetails extends Fragment {
 
     private void getdata() {
         int productcode=Integer.parseInt(SessionManagement.KEY_Shopcode);
-
+        System.out.println("productcode = "+productcode);
         String url = WebServicesAPI.deployment_api +"USER/UseralldetailsByshopid?shopid="+productcode;
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
@@ -77,6 +77,7 @@ public class DrawerOwnerDetails extends Fragment {
         requestQueue.add(stringRequest);
     }
     private void showJSON(String response){
+
         try {
             JSONArray jsonObject = new JSONArray(response);
             for(int i=0;i<jsonObject.length();i++) {

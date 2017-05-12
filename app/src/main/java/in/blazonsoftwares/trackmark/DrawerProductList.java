@@ -76,7 +76,9 @@ public class DrawerProductList  extends Fragment {
     private void getdata()
     {
         int shopcode=Integer.parseInt(SessionManagement.KEY_Shopcode);
+        System.out.println("shopcode = "+shopcode);
         String url = WebServicesAPI.deployment_api+"Shop/ProductDetailsByid?shopid="+shopcode;
+        System.out.println("url = "+url);
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

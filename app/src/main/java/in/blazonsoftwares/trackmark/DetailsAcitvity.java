@@ -184,7 +184,7 @@ public class DetailsAcitvity extends AppCompatActivity {
                 // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
                 // if this doesn't work as desired, another possibility is to call `finish()` here.
                // this.onBackPressed();
-
+                super.onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

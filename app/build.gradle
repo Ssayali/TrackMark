@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
 
@@ -54,5 +58,6 @@ dependencies {
 
 
 
+    //compile 'com.google.android.gms:play-services-appindexing:10.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

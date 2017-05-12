@@ -350,8 +350,8 @@ public class CartList extends AppCompatActivity {
                 siteModel.setCart_Product_Name(vehicle_info.getString(Configvolley.Cart_Product_Name));
                 siteModel.setCart_Product_Price(vehicle_info.getString(Configvolley.Cart_Product_Price));
                 siteModel.setCart_Product_qty(vehicle_info.getString(Configvolley.Cart_Product_qty));
-
-                String totapprice = "" + (Integer.parseInt(vehicle_info.getString(Configvolley.Cart_Product_Price).trim()) * Integer.parseInt(vehicle_info.getString(Configvolley.Cart_Product_qty).trim()));
+                String totapprice="0";
+                totapprice = "" + (Integer.parseInt(vehicle_info.getString(Configvolley.Cart_Product_Price).trim()) * Integer.parseInt(vehicle_info.getString(Configvolley.Cart_Product_qty).trim()));
                 finalamt = finalamt + Integer.parseInt(totapprice);
                 Country country = new Country(vehicle_info.getString(Configvolley.Cart_Product_Name), i + "", false, vehicle_info.getString(Configvolley.Cart_Product_Price), vehicle_info.getString(Configvolley.Cart_Product_qty), totapprice, vehicle_info.getString(Configvolley.Cart_Code));
                 countryList.add(country);
